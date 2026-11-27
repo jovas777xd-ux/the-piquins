@@ -1185,184 +1185,14 @@ dialog .empty{color:var(--texto)}
   </form>
 </dialog>
 
-<div class="toast" id="toast" role="status"></div><script>
+<div class="toast" id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="admin/config.js?v=1"></script>
+<script>
 "use strict";
 
-/*
-  El primer valor es el nombre EXACTO de la foto.
-  El segundo es el nombre que aparece en el catálogo.
-  No cambies los nombres de los archivos .jpeg.
-*/
-const products = [
-  ["abejitas.jpeg","Abejitas"],
-  ["abejorro.jpeg","Abejorro"],
-  ["abejorromixi.jpeg","Abejorro Mixi"],
-  ["abejorromixivampirito.jpeg","Abejorro Mixi Vampirito"],
-  ["abejorrospiderman.jpeg","Abejorro Spider-Man"],
-  ["adrenocromo.jpeg","Adrenocromo"],
-  ["adventuretime.jpeg","Adventure Time"],
-  ["afrodita.jpeg","Afrodita"],
-  ["araña.jpeg","Araña"],
-  ["arañitas.jpeg","Arañitas"],
-  ["avispon.jpeg","Avispón"],
-  ["avisponbolsa.jpeg","Avispón en bolsa"],
-  ["batman.jpeg","Batman"],
-  ["bazuca2pulgadas.jpeg","Bazuca de 2 pulgadas"],
-  ["bazuquin.jpeg","Bazuquín"],
-  ["billetes.jpeg","Billetes"],
-  ["bobesponja.jpeg","Bob Esponja"],
-  ["bolabarbie.jpeg","Bola Barbie"],
-  ["boladehumogorila.jpeg","Bola de humo Gorila"],
-  ["boladehumomega.jpeg","Bola de humo Mega"],
-  ["boladeluzchavo.jpeg","Bola de luz Chavo"],
-  ["bombon.jpeg","Bombón"],
-  ["brainroots.jpeg","Brainrots"],
-  ["buscapie.jpeg","Buscapié"],
-  ["cajitasbob.jpeg","Cajitas Bob Esponja"],
-  ["cajitasilbato.jpeg","Cajita silbato"],
-  ["camelia.jpeg","Camelia"],
-  ["cameliagrande.jpeg","Camelia grande"],
-  ["cameliasminions.jpeg","Camelias Minions"],
-  ["cameliasositos.jpeg","Camelias Ositos"],
-  ["capibaracracker.jpeg","Capibara con cracker"],
-  ["capibarasluminosos.jpeg","Capibaras luminosos"],
-  ["caramelito.jpeg","Caramelito"],
-  ["caramelogrande.jpeg","Caramelo grande"],
-  ["caramelojumbo.jpeg","Caramelo jumbo"],
-  ["caramelomediano.jpeg","Caramelo mediano"],
-  ["catarinas.jpeg","Catarinas"],
-  ["cervesitas.jpeg","Cervecitas"],
-  ["charrovolador.jpeg","Charro volador"],
-  ["chupacabras.jpeg","Chupacabras"],
-  ["cigarros.jpeg","Cigarros"],
-  ["cigarrospallmall.jpeg","Cigarros Pall Mall"],
-  ["colorsmokebomb.jpeg","Color Smoke Bomb"],
-  ["cometa.jpeg","Cometa"],
-  ["cometaespecial.jpeg","Cometa especial"],
-  ["cometaespecialmorado.jpeg","Cometa especial morado"],
-  ["cometin.jpeg","Cometín"],
-  ["cometon.jpeg","Cometón"],
-  ["crackerboom.jpeg","Cracker Boom"],
-  ["crayones.jpeg","Crayones"],
-  ["cueteblanco.jpeg","Cuete blanco"],
-  ["cueteblancoespecial.jpeg","Cuete blanco especial"],
-  ["dollar.jpeg","Dollar"],
-  ["dragonballzcracker.jpeg","Dragon Ball Z con cracker"],
-  ["duvalin.jpeg","Duvalín"],
-  ["elcahvocracker.jpeg","El Chavo con cracker"],
-  ["emoji.jpeg","Emoji"],
-  ["escorpiones.jpeg","Escorpiones"],
-  ["escupidordecracker.jpeg","Escupidor de cracker"],
-  ["escupidordediamantina.jpeg","Escupidor de diamantina"],
-  ["escupidorspiderman.jpeg","Escupidor Spider-Man"],
-  ["espantasuegras.jpeg","Espantasuegras"],
-  ["flash.jpeg","Flash"],
-  ["flashdecolor.jpeg","Flash de color"],
-  ["florerodecolor.jpeg","Florero de color"],
-  ["frozen.jpeg","Frozen"],
-  ["gallinitas.jpeg","Gallinitas"],
-  ["garapiñados.jpeg","Garapiñados"],
-  ["gritito.jpeg","Gritito"],
-  ["harleyquinn.jpeg","Harley Quinn"],
-  ["hormiguero.jpeg","Hormiguero"],
-  ["huevodepato.jpeg","Huevo de pato"],
-  ["intensamente.jpeg","Intensamente"],
-  ["juguitos.jpeg","Juguitos"],
-  ["jumping.jpeg","Jumping"],
-  ["liloystitchcracker.jpeg","Lilo y Stitch con cracker"],
-  ["llorona.jpeg","Llorona"],
-  ["luciernagas.jpeg","Luciérnagas"],
-  ["luciernagasespeciales.jpeg","Luciérnagas especiales"],
-  ["luzdebengala.jpeg","Luz de bengala"],
-  ["luzdebengalaespecial.jpeg","Luz de bengala especial"],
-  ["luzdebengalagrande.jpeg","Luz de bengala grande"],
-  ["luzdebengalamediana.jpeg","Luz de bengala mediana"],
-  ["mamut.jpeg","Mamut"],
-  ["mansionadams.jpeg","Mansión Addams"],
-  ["maruchan.jpeg","Maruchan"],
-  ["mazapan.jpeg","Mazapán"],
-  ["mazapancrackerconcolor.jpeg","Mazapán con cracker y color"],
-  ["medusas.jpeg","Medusas"],
-  ["mexicanitosdecolores.jpeg","Mexicanitos de colores"],
-  ["minadecracker.jpeg","Mina de cracker"],
-  ["minicangrejito.jpeg","Mini cangrejito"],
-  ["minimcqueen.jpeg","Mini McQueen"],
-  ["minioncracker.jpeg","Minion con cracker"],
-  ["minions.jpeg","Minions"],
-  ["miniovnimixi.jpeg","Mini ovni Mixi"],
-  ["misil.jpeg","Misil"],
-  ["misilconluz.jpeg","Misil con luz"],
-  ["misiles25shots.jpeg","Misiles 25 shots"],
-  ["mosaico.jpeg","Mosaico"],
-  ["mosaicocolores.jpeg","Mosaico de colores"],
-  ["olaf.jpeg","Olaf"],
-  ["ollagrande.jpeg","Olla grande"],
-  ["ollamediana.jpeg","Olla mediana"],
-  ["ollitas.jpeg","Ollitas"],
-  ["orugas.jpeg","Orugas"],
-  ["ovni.jpeg","Ovni"],
-  ["ovnigalactico.jpeg","Ovni galáctico"],
-  ["ovnimixi.jpeg","Ovni Mixi"],
-  ["paletamicky.jpeg","Paleta Mickey"],
-  ["paletaspider.jpeg","Paleta Spider-Man"],
-  ["paletastitch.jpeg","Paleta Stitch"],
-  ["palomadeluz.jpeg","Paloma de luz"],
-  ["palomamediana.jpeg","Paloma mediana"],
-  ["patitos.jpeg","Patitos"],
-  ["pato.jpeg","Pato"],
-  ["peppapig.jpeg","Peppa Pig"],
-  ["pirinolas.jpeg","Pirinolas"],
-  ["pistolitafreefire.jpeg","Pistolita Free Fire"],
-  ["pitufisorpresas.jpeg","Pitufi sorpresas"],
-  ["pulgas.jpeg","Pulgas"],
-  ["pulgasdecracker.jpeg","Pulgas de cracker"],
-  ["r15.jpeg","R15"],
-  ["rehiletecosmico.jpeg","Rehilete cósmico"],
-  ["revelaciondesexo.jpeg","Revelación de sexo"],
-  ["revelacionpirostar.jpeg","Revelación Pirostar"],
-  ["rifas.jpeg","Rifas"],
-  ["rockstar.jpeg","Rockstar"],
-  ["rosadecracker.jpeg","Rosa con cracker"],
-  ["rosadelluz.jpeg","Rosa de luz"],
-  ["sabritas.jpeg","Sabritas"],
-  ["silbato.jpeg","Silbato"],
-  ["silbatoloco.jpeg","Silbato loco"],
-  ["silbatolocourba.jpeg","Silbato loco Urba"],
-  ["silbatotoroloco.jpeg","Silbato Toro Loco"],
-  ["sonic.jpeg","Sonic"],
-  ["sorullo.jpeg","Sorullo"],
-  ["supermario.jpeg","Super Mario"],
-  ["supersonaja.jpeg","Super sonaja"],
-  ["tamalitos.jpeg","Tamalitos"],
-  ["tanquedeguerra.jpeg","Tanque de guerra"],
-  ["tarolitosdeluz.jpeg","Tarolitos de luz"],
-  ["thewalkingdeathcracker.jpeg","The Walking Dead con cracker"],
-  ["torbellino.jpeg","Torbellino"],
-  ["toritos.jpeg","Toritos"],
-  ["tormentaluminosa.jpeg","Tormenta luminosa"],
-  ["tornado.jpeg","Tornado"],
-  ["tortuguitas.jpeg","Tortuguitas"],
-  ["trabuco.jpeg","Trabuco"],
-  ["trabucodecolores.jpeg","Trabuco de colores"],
-  ["trabucoespecial.jpeg","Trabuco especial"],
-  ["trabucoluzycracker.jpeg","Trabuco de luz y cracker"],
-  ["trabucomixi.jpeg","Trabuco Mixi"],
-  ["trabuquitoluminoso.jpeg","Trabuquito luminoso"],
-  ["trompito.jpeg","Trompito chillador"],
-  ["unicornio.jpeg","Unicornio"],
-  ["Vara Chiflador.jpeg","Vara Chiflador"],
-  ["vara pajarera.jpeg","Vara pajarera"],
-  ["varaurba.jpeg","Vara Urba"],
-  ["venom.jpeg","Venom"],
-  ["volcan de diamantina.jpeg","Volcán de diamantina"]
-].map(([image,name]) => ({
-  id:"PHOTO-"+image,
-  name,
-  category:"Productos",
-  price:null,
-  featured:false,
-  image
-}));
+/* Inventario público obtenido de Supabase. Las fotos originales siguen en GitHub. */
+const products = [];
 
 const $ = id => document.getElementById(id);
 
@@ -1387,310 +1217,6 @@ const normalize = value => String(value)
   .normalize("NFD")
   .replace(/[\u0300-\u036f]/g,"")
   .toLowerCase();
-
-// Baterías: nombres conservados tal como están guardados en los archivos.
-products.push(...[
-  "tortasoldado",
-  "alegria",
-  "amazonas",
-  "armonia",
-  "azteca",
-  "bigbang",
-  "bolero",
-  "borabora",
-  "brasil",
-  "brillante",
-  "celebracion",
-  "confetideluces",
-  "cosmopolitan",
-  "españa",
-  "espectacular",
-  "estelar",
-  "europa",
-  "fantasia",
-  "felicidad",
-  "felizaño",
-  "feria",
-  "festival",
-  "fiesta",
-  "fiestahawaiana",
-  "fiestalatina",
-  "fiestaregia",
-  "fortuna",
-  "happy",
-  "hawai",
-  "jackspot",
-  "japon",
-  "lasvegas",
-  "mariachis5estrellas",
-  "maya",
-  "medianoche",
-  "mexicopower",
-  "nochedefiesta",
-  "nochemagica",
-  "olmeca",
-  "paraiso",
-  "poker",
-  "ranchera",
-  "remolinosmulticolor",
-  "ruleta",
-  "rumba",
-  "salsa",
-  "samba",
-  "showbravo",
-  "showcaribe",
-  "showverbena",
-  "sonrisas",
-  "storm",
-  "supershow",
-  "tequila",
-  "tierra",
-  "tornadocake",
-  "USA"
-].map(name => ({
-  id:"BAT-"+name,
-  name,
-  category:"Baterías",
-  price:null,
-  featured:false,
-  image:name+".jpeg"
-})));
-
-const batteryVideos = {
-  "borabora": [
-    "Bora Bora",
-    "04QRXpPrZS8"
-  ],
-  "remolinosmulticolor": [
-    "Remolinos Multicolor",
-    "TdjXD4PPWmA"
-  ],
-  "confetideluces": [
-    "Confeti de Luces",
-    "TE4H0nbVFxl"
-  ],
-  "medianoche": [
-    "Media Noche",
-    "SA0IJC66yrY"
-  ],
-  "tequila": [
-    "Tequila",
-    "m2-xn6BKkbI"
-  ],
-  "ranchera": [
-    "Ranchera",
-    "S17a-4VrvKg"
-  ],
-  "tortasoldado": [
-    "Torta Soldado",
-    "MEjYyMd2Fq8"
-  ],
-  "alegria": [
-    "Alegría",
-    "0-srvXJhdsw"
-  ],
-  "fortuna": [
-    "Fortuna",
-    "J8PDyyIAMvQ"
-  ],
-  "armonia": [
-    "Armonía",
-    "3M7VSc-q1iQ"
-  ],
-  "fantasia": [
-    "Fantasía",
-    "b7qhWajox5w"
-  ],
-  "sonrisas": [
-    "Sonrisas",
-    "AtdyP4UHBbI"
-  ],
-  "brasil": [
-    "Brasil",
-    "aJcS4p7_aDc"
-  ],
-  "japon": [
-    "Japón",
-    "i0oFTsZYLLU"
-  ],
-  "USA": [
-    "USA",
-    "F6X6bKGq7TE"
-  ],
-  "españa": [
-    "España",
-    "TW5IPzMKt-w"
-  ],
-  "lasvegas": [
-    "Las Vegas",
-    "nz75VffQmS8"
-  ],
-  "poker": [
-    "Póker",
-    "r9e4hhrOpa0"
-  ],
-  "jackspot": [
-    "Jackpot",
-    "LiMVnHBJHSg"
-  ],
-  "ruleta": [
-    "Ruleta",
-    "Yy13rNVxl4U"
-  ],
-  "rumba": [
-    "Rumba",
-    "J4RzSiL1u3c"
-  ],
-  "samba": [
-    "Samba",
-    "DAagyyuGJk8"
-  ],
-  "salsa": [
-    "Salsa",
-    "_VA8JU4oEB8"
-  ],
-  "bolero": [
-    "Bolero",
-    "KJtcD06KEGg"
-  ],
-  "cosmopolitan": [
-    "Cosmopolitan",
-    "uAqS7hxkatI"
-  ],
-  "fiestahawaiana": [
-    "Fiesta Hawaiana",
-    "DUTR-sjzATs"
-  ],
-  "europa": [
-    "Europa",
-    "CQEi4P_rKkQ"
-  ],
-  "olmeca": [
-    "Olmeca",
-    "fCk0i9w4gt4"
-  ],
-  "maya": [
-    "Maya",
-    "FZVmBpt-Yrg"
-  ],
-  "azteca": [
-    "Azteca",
-    "1dHbEX_quHM"
-  ],
-  "tierra": [
-    "Tierra",
-    "Y-k_NBYKB7Q"
-  ],
-  "fiestalatina": [
-    "Fiesta Latina",
-    "E0lkz6Tq23Y"
-  ],
-  "fiestaregia": [
-    "Fiesta Regia",
-    "PVzqEAZpwk0"
-  ],
-  "storm": [
-    "Storm",
-    "bSm16hLthRc"
-  ],
-  "bigbang": [
-    "Big Bang",
-    "u_8-cg9bOEA"
-  ],
-  "tornadocake": [
-    "Tornado Cake",
-    "0PVRcPXD850"
-  ],
-  "felizaño": [
-    "Feliz Año",
-    "MKFyZlLqtuY"
-  ],
-  "feria": [
-    "Feria",
-    "kksUadxpxNk"
-  ],
-  "hawai": [
-    "Hawái",
-    "XirgY64TgEU"
-  ],
-  "showcaribe": [
-    "Show Caribe",
-    "o4DzZXW1nt0"
-  ],
-  "festival": [
-    "Festival",
-    "vwEx4qZJl7Q"
-  ],
-  "celebracion": [
-    "Celebración",
-    "eEkPbq-5eQk"
-  ],
-  "fiesta": [
-    "Fiesta",
-    "FzL1NxlCKmk"
-  ],
-  "happy": [
-    "Happy",
-    "msn5_KSSr1Q"
-  ],
-  "supershow": [
-    "Super Show",
-    "H1ItPv8O3kk"
-  ],
-  "nochemagica": [
-    "Noche Mágica",
-    "XmKzfeHuECo"
-  ],
-  "mariachis5estrellas": [
-    "Mariachi 5 Estrellas",
-    "jVHLWZg3A6c"
-  ],
-  "nochedefiesta": [
-    "Noche de Fiesta",
-    "8qR9YWemixE"
-  ],
-  "paraiso": [
-    "Paraíso",
-    "7-6huSf7sBs"
-  ],
-  "felicidad": [
-    "Felicidad",
-    "98_RVTnO33Q"
-  ],
-  "mexicopower": [
-    "México Power",
-    "2dgCUycydQU"
-  ],
-  "brillante": [
-    "Brillante",
-    "LKNug7uwHHE"
-  ],
-  "estelar": [
-    "Estelar",
-    "VoA-tE388fY"
-  ],
-  "espectacular": [
-    "Espectacular",
-    "qUvYZPf3BC4"
-  ],
-  "amazonas": [
-    "Amazonas",
-    "IhOmuaZ56nU"
-  ],
-  "showbravo": [
-    "Show Bravo",
-    "F30vlsk6qQw"
-  ],
-  "showverbena": [
-    "Show Verbena",
-    "bVkqXsYoW4w"
-  ]
-};
-products.forEach(product => {
-  if(product.category !== "Baterías") return;
-  const entry = batteryVideos[product.image.replace(/\.jpeg$/i, "")];
-  if(entry){ product.name = entry[0]; product.video = "https://www.youtube.com/watch?v=" + entry[1]; }
-});
 
 const byId = new Map(products.map(p => [p.id,p]));
 let cart = {};
@@ -2081,8 +1607,82 @@ $("garland").innerHTML = `
   </svg>
 `;
 
-renderProducts();
-renderCart();
+// La tienda pública y el administrador muestran las mismas fotos y productos.
+function urlFotoPublica(valor) {
+  const foto = String(valor || "").trim();
+  if (!foto) return "";
+  if (/^https:\/\//i.test(foto)) return foto;
+  // Los archivos originales viven en la carpeta principal de GitHub Pages.
+  if (foto.includes("/") || foto.includes("\\") || foto.includes("..") || foto === ".") return "";
+  return encodeURIComponent(foto);
+}
+function urlVideoPublico(valor) {
+  const video = String(valor || "").trim();
+  return /^https:\/\//i.test(video) ? video : "";
+}
+async function cargarCatalogoAdministrado() {
+  $("resultCount").textContent = "Cargando catálogo...";
+  $("products").replaceChildren();
+  $("more").hidden = true;
+  $("empty").hidden = true;
+  try {
+    if (!window.supabase || !SUPABASE_URL || !SUPABASE_KEY) {
+      throw new Error("No está disponible la conexión a Supabase.");
+    }
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+    });
+    const resultados = [];
+    for (let inicio=0;inicio<10000;inicio+=500) {
+      const { data, error } = await client.from(TABLA_PRODUCTOS)
+        .select("id,codigo,nombre,categoria,precio,imagen,video,destacado,activo")
+        .eq("activo",true)
+        .order("id",{ascending:true})
+        .range(inicio,inicio+499);
+      if (error) throw error;
+      resultados.push(...(data || []));
+      if (!data || data.length<500) break;
+    }
+    const nuevos = resultados.map(p => ({
+      id: String(p.codigo || ("PIQUINS-" + p.id)),
+      name: p.nombre,
+      category: p.categoria || "Productos",
+      price: p.precio == null ? null : Number(p.precio),
+      featured: !!p.destacado,
+      image: urlFotoPublica(p.imagen),
+      video: urlVideoPublico(p.video)
+    }));
+    products.splice(0,products.length,...nuevos);
+    byId.clear();
+    for(const p of products) byId.set(p.id,p);
+    // Los artículos desactivados no deben quedarse en carritos anteriores.
+    for(const id of Object.keys(cart)) if(!byId.has(id)) delete cart[id];
+    try { localStorage.setItem("piquins-cart-v1",JSON.stringify(cart)); } catch(error) {}
+    const extras = [...new Set(products.map(p=>p.category))]
+      .filter(c=>c!=="Productos" && c!=="Baterías" && c!=="Todos")
+      .sort((a,b)=>a.localeCompare(b,"es"));
+    const categorias=["Todos","Baterías",...extras];
+    $("categories").innerHTML=categorias.map(name =>
+      '<button type="button" class="category" data-category="'+escapeHTML(name)+
+      '" aria-pressed="false">'+escapeHTML(name)+'</button>'
+    ).join("");
+    if(!categorias.includes(category)) category="Todos";
+    renderProducts();
+    renderCart();
+  } catch(error) {
+    // No mostrar inventarios obsoletos que pudieran incluir productos ocultos.
+    products.splice(0);
+    byId.clear();
+    cart={};
+    $("products").replaceChildren();
+    $("resultCount").textContent="No fue posible cargar el catálogo. Actualiza la página para reintentar.";
+    $("more").hidden=true;
+    $("empty").hidden=true;
+    renderCart();
+    console.error("The Piquins: no se pudo leer el inventario",error);
+  }
+}
+cargarCatalogoAdministrado();
 </script>
 
 <script>
