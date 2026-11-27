@@ -19,7 +19,9 @@ let inventario = [];
 function fotoProducto(producto) {
   const foto = producto.imagen || "";
   if (!foto) return null;
-  if (esURLFotoSegura(foto)) return foto;
+  // Solo las URL absolutas apuntan directamente a Supabase Storage.
+  // Los nombres de archivo .jpeg viven en la carpeta padre de /admin/.
+  if (/^https?:\/\//i.test(foto)) return foto;
   // Mantener espacios, mayúsculas y tildes presentes en nombres originales.
   if (/^(?:\\.|\/|https?:)/i.test(foto) || foto.includes("..") || foto.includes("/") || foto.includes("\\\\")) return null;
   return "../" + encodeURIComponent(foto);
@@ -356,6 +358,10 @@ function dibujarProductos() {
       img.src = foto;
       img.alt = "";
       img.loading = "lazy";
+      img.addEventListener("error", () => {
+        img.remove();
+        miniatura.textContent = "Sin foto";
+      }, { once: true });
       miniatura.append(img);
     } else miniatura.textContent = "Sin foto";
 
