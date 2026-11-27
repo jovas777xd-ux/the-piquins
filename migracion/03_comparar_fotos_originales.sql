@@ -1,23 +1,12 @@
--- THE PIQUINS - COMPARACIÓN SEGURA DE FOTOGRAFÍAS
--- Paso A: EJECUTAR ESTE SCRIPT PRIMERO en Supabase SQL Editor del
--- proyecto compartido de ALEXVAL/ELEANA/THE PIQUINS.
--- NO modifica ninguna tabla permanente ni ninguna fotografía.
--- Las 218 referencias vienen del catálogo original The Piquins en GitHub.
--- IMPORTANTE: el color de fondo de cada archivo NO puede verificarse con SQL.
--- Revisa una muestra de las URL propuestas antes de aplicar el siguiente script.
+-- THE PIQUINS — COMPARACIÓN DE FOTOGRAFÍAS, VERSIÓN CORREGIDA
+-- Ejecutar TODO el archivo en SQL Editor de Supabase, desde la primera línea.
+-- No crea tablas temporales ni permanentes. No modifica ningún producto.
+-- Compara 218 referencias de fotos originales conservadas en GitHub.
+-- Verifica visualmente que los archivos sean los de fondo negro antes
+-- de aplicar cambios al inventario.
 
-begin;
-
--- El inventario importado tiene 218 códigos originales verificados en GitHub.
--- Crea solo una tabla temporal de correspondencia: no toca datos de tiendas.
-create temporary table piquins_fotos_oficiales (
-  codigo text primary key,
-  archivo text not null,
-  url_oficial text not null
-) on commit drop;
-
-insert into piquins_fotos_oficiales (codigo, archivo, url_oficial)
-values
+with fotos_originales(codigo, archivo, url_oficial) as (
+  values
   ('PHOTO-abejitas.jpeg', 'abejitas.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/abejitas.jpeg'),
   ('PHOTO-abejorro.jpeg', 'abejorro.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/abejorro.jpeg'),
   ('PHOTO-abejorromixi.jpeg', 'abejorromixi.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/abejorromixi.jpeg'),
@@ -235,8 +224,8 @@ values
   ('BAT-tequila', 'tequila.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/tequila.jpeg'),
   ('BAT-tierra', 'tierra.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/tierra.jpeg'),
   ('BAT-tornadocake', 'tornadocake.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/tornadocake.jpeg'),
-  ('BAT-USA', 'USA.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/USA.jpeg');
-
+  ('BAT-USA', 'USA.jpeg', 'https://jovas777xd-ux.github.io/the-piquins/USA.jpeg')
+)
 select
   p.codigo,
   p.nombre,
@@ -252,6 +241,5 @@ select
     else 'PROPONER FOTO ORIGINAL GITHUB'
   end as revision
 from public.piquins_productos p
-join piquins_fotos_oficiales m on m.codigo = p.codigo
+join fotos_originales m on m.codigo = p.codigo
 order by p.nombre;
-commit;
