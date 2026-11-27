@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#002d35">
+  <meta name="description" content="Administración privada del catálogo THE PIQUINS.">
+  <title>Administración | The Piquins</title>
+  <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+  <main id="login" class="auth-card">
+    <div class="brand-emblem" aria-hidden="true">TP</div>
+    <p class="eyebrow">Catálogo The Piquins</p>
+    <h1>Acceso administrativo</h1>
+    <p class="subtitle">Ingresa con tu cuenta autorizada para THE PIQUINS.</p>
+    <form id="formLogin">
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" type="email" autocomplete="username" placeholder="correo@ejemplo.com" required>
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" type="password" autocomplete="current-password" placeholder="Tu contraseña" required>
+      <button type="submit" class="button button-primary">Iniciar sesión</button>
+    </form>
+    <button id="enviarRecuperacion" type="button" class="text-button">¿Olvidaste tu contraseña?</button>
+    <p id="mensajeLogin" class="message" role="status" aria-live="polite"></p>
+    <a class="back-link" href="../">Volver al catálogo</a>
+    <small class="app-version">THE PIQUINS · Versión 1</small>
+  </main>
+
+  <main id="recuperacion" class="auth-card" hidden>
+    <div class="brand-emblem" aria-hidden="true">TP</div>
+    <h1>Nueva contraseña</h1>
+    <p class="subtitle">Establece una nueva contraseña desde tu enlace de recuperación.</p>
+    <form id="formRecuperacion">
+      <label for="nuevaContrasena">Nueva contraseña (mínimo 8 caracteres)</label>
+      <input id="nuevaContrasena" type="password" minlength="8" autocomplete="new-password" required>
+      <button type="submit" class="button button-primary">Guardar contraseña</button>
+    </form>
+    <p id="mensajeRecuperacion" class="message" role="status" aria-live="polite"></p>
+  </main>
+
+  <main id="panel" class="dashboard" hidden>
+    <header class="dashboard-header">
+      <div class="dashboard-brand">
+        <div class="brand-emblem brand-emblem-small" aria-hidden="true">TP</div>
+        <div>
+          <p class="eyebrow">THE PIQUINS · Acceso privado</p>
+          <h1>Panel de administración</h1>
+          <p class="subtitle">Administra únicamente los productos de THE PIQUINS.</p>
+        </div>
+      </div>
+      <button type="button" id="salir" class="button button-outline">Cerrar sesión</button>
+    </header>
+
+    <section class="section" aria-labelledby="nuevoProductoTitulo">
+      <div class="section-heading">
+        <div>
+          <h2 id="nuevoProductoTitulo">Agregar producto</h2>
+          <p class="subtitle">Los nuevos productos inician ocultos hasta que decidas mostrarlos.</p>
+        </div>
+      </div>
+      <form id="formProducto">
+        <div class="fields">
+          <div class="field">
+            <label for="nombreProducto">Nombre del producto *</label>
+            <input id="nombreProducto" type="text" required maxlength="180" placeholder="Ej. Producto nuevo">
+          </div>
+          <div class="field">
+            <label for="categoriaProducto">Categoría *</label>
+            <input id="categoriaProducto" type="text" required maxlength="100" list="categoriasDisponibles" placeholder="Categoría del catálogo">
+            <datalist id="categoriasDisponibles"></datalist>
+          </div>
+          <div class="field">
+            <label for="precioProducto">Precio (MXN)</label>
+            <input id="precioProducto" type="number" min="0" step="0.01" placeholder="Vacío: por cotizar">
+          </div>
+          <div class="field">
+            <label for="codigoProducto">Código (opcional)</label>
+            <input id="codigoProducto" type="text" maxlength="100" placeholder="Se genera automáticamente si lo dejas vacío">
+            <small>Si escribes un código, debe ser diferente a los ya registrados.</small>
+          </div>
+          <div class="field field-full">
+            <label for="descripcionProducto">Descripción (opcional)</label>
+            <textarea id="descripcionProducto" rows="3" placeholder="Descripción del producto"></textarea>
+          </div>
+          <div class="field">
+            <label for="imagenProducto">Fotografía (opcional)</label>
+            <input id="imagenProducto" type="file" accept="image/jpeg,image/png,image/webp">
+            <small>JPG, PNG o WEBP. Máximo 5 MB.</small>
+          </div>
+          <div class="field">
+            <label for="videoProducto">Enlace de video (opcional)</label>
+            <input id="videoProducto" type="url" placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="button button-primary">Guardar producto</button>
+        </div>
+      </form>
+      <p id="mensajeGuardar" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="seccionEditar" class="section edit-section" aria-labelledby="editarTitulo" hidden>
+      <h2 id="editarTitulo">Editar producto</h2>
+      <form id="formEditar">
+        <input id="editarId" type="hidden">
+        <div class="fields">
+          <div class="field">
+            <label for="editarNombre">Nombre *</label>
+            <input id="editarNombre" type="text" required maxlength="180">
+          </div>
+          <div class="field">
+            <label for="editarCategoria">Categoría *</label>
+            <input id="editarCategoria" type="text" required maxlength="100" list="categoriasDisponibles">
+          </div>
+          <div class="field">
+            <label for="editarPrecio">Precio (MXN)</label>
+            <input id="editarPrecio" type="number" min="0" step="0.01">
+          </div>
+          <div class="field">
+            <label for="editarCodigo">Código (opcional)</label>
+            <input id="editarCodigo" type="text" maxlength="100">
+          </div>
+          <div class="field field-full">
+            <label for="editarDescripcion">Descripción</label>
+            <textarea id="editarDescripcion" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="editarImagen">Cambiar fotografía</label>
+            <input id="editarImagen" type="file" accept="image/jpeg,image/png,image/webp">
+            <small>Déjalo vacío para conservar la imagen actual.</small>
+          </div>
+          <div class="field">
+            <label for="editarVideo">Enlace de video</label>
+            <input id="editarVideo" type="url" placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="button button-primary">Guardar cambios</button>
+          <button id="cancelarEdicion" type="button" class="button button-outline">Cancelar</button>
+        </div>
+      </form>
+      <p id="mensajeEditar" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="section" aria-labelledby="listaTitulo">
+      <div class="section-heading">
+        <div>
+          <h2 id="listaTitulo">Inventario de THE PIQUINS</h2>
+          <p class="subtitle">Busca, edita, oculta o muestra tus productos.</p>
+        </div>
+        <button id="actualizarProductos" type="button" class="button button-outline">Actualizar lista</button>
+      </div>
+      <div class="filters">
+        <div class="field filter-search">
+          <label for="buscarProducto">Buscar por nombre, categoría o código</label>
+          <input id="buscarProducto" type="search" placeholder="Buscar productos..." autocomplete="off">
+        </div>
+        <div class="field filter-status">
+          <label for="filtrarEstado">Visibilidad</label>
+          <select id="filtrarEstado">
+            <option value="todos">Todos</option>
+            <option value="visibles">Visibles</option>
+            <option value="ocultos">Ocultos</option>
+          </select>
+        </div>
+      </div>
+      <p class="status" id="contadorProductos" aria-live="polite"></p>
+      <p class="message" id="mensajeProductos" role="status" aria-live="polite"></p>
+      <div id="listaProductos" class="product-list"></div>
+    </section>
+    <footer>Administración privada · THE PIQUINS · Versión 1</footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js?v=1"></script>
+  <script src="admin.js?v=1"></script>
+</body>
+</html>
